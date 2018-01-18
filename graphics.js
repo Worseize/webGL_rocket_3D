@@ -1,5 +1,5 @@
 new p5();
-let graphics, time = 0, rocket , camAngleX = 1, camAngleY = 1 , kk,myText;
+let graphics, time = 0, rocket , camAngleX = 1, camAngleY = 1 , kk, myText , camRadius = 300, camRadiusStep = 20;
 
 function preload(){
   rocket1 = loadImage('img/rocket1.png');
@@ -9,6 +9,7 @@ window.onresize = function(){
 }
 function setup(){
   myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
+  myCanvas.mouseWheel(changeCamRadius);
   myText = createGraphics(200, 200);
   graphics = createGraphics(1, 1);
   pixelDensity(1);
@@ -61,8 +62,8 @@ function draw(){
 
   texture(rocket1);
   showShip();
-  let camPosX = 0 + 300 * sin(camAngleX) + 0;
-  let camPosY = 0 + 300 * cos(camAngleX);
+  let camPosX = camRadius * sin(camAngleX);
+  let camPosY = camRadius * cos(camAngleX);
   let camPosZ = 0;
   camera(camPosX, camPosY , camPosZ, -camPosX , -camPosY , -camPosZ, 0, 0, 1);
   time++
@@ -79,6 +80,24 @@ keyPressed  = function(){
     kk = 83;
   }
 }
+
+function changeCamRadius(event){
+  if(event.deltaY > camRadiusStep){
+    if(camRadius != camRadiusStep){
+      camRadius -= camRadiusStep;
+    }else{
+      camRadius -= 2 * camRadiusStep;
+    }
+
+  }else if(event.deltaY < camRadiusStep){
+    if(camRadius != -camRadiusStep){
+      camRadius += camRadiusStep;
+    }else{
+      camRadius += 2 * camRadiusStep;
+    }
+  }
+}
+
 function showShip(){
   push();
     rotateX(PI/4);
