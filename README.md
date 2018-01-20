@@ -1,6 +1,9 @@
 # OPEN GL => WEB GL => p5.js library => myScetch
 
 ## Options:
-   -rotate camera around center A | D => LEFT | RIGHT
-   -move camera from center mouseWheel IN | OUT
-   -rotate camera around center W | S => UP | DOWN
+   -rotate camera(player) by mouse
+   -move camera(player) W | S || A | D
+   -jump --> SPACE
+
+## Functionality:
+   -gravity for player
