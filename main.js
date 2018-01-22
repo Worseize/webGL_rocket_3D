@@ -8,21 +8,31 @@
 new p5();
 let scene = 1 ,jumpTimer = 1 , playerStartVelosity = 10, gravity = 0.33, sceneLength = 3000, camX = 0, camY = 0 , camZ = 0 , sensetivityX,
     sensetivityY , width, prevX, prevY , graphics, time = 0, rocket , lookAtX = 1, lookAtY = 0 , lookAtZ = 0, camAngleX = 0, camAngleZ = 0,
-    kk , camSpeed = 20, jump = false;
+    kk , camSpeed = 10, jump = false, myAim;
 
 let groundZ = sceneLength /  2 - 75;
 
 function preload(){
   rocket1 = loadImage('img/rocket1.png');
-  //aim = loadImage('img/aim.png');
+  aim = loadImage('img/aim.png');
+  craft = loadImage('img/craft.png');
+  cube = loadImage('img/cube.png');
+  mountain = loadImage('img/mountain.png');
+  cloud = loadImage('img/cloud.png');
+  tree = loadImage('img/tree.png');
+  nature = loadImage('img/nature.png');
+  grass = loadImage('img/grass.png');
+  stone = loadImage('img/stone.png');
+  bricks = loadImage('img/bricks.png');
+  arcTexture = loadImage('img/arc.png');
 }
 window.onresize = function(){
   myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
 }
 function setup(){
   myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
-  myCanvas.style("cursor", "crosshair");
-  graphics = createGraphics(1, 1);
+  //myCanvas.style("cursor", "crosshair");
+  myCanvas.style("cursor", "none");
   prevX = mouseX;
   prevY = mouseY;
   sensetivityX = myCanvas.width / 10000;
@@ -31,8 +41,6 @@ function setup(){
   pixelDensity(1);
   /*
   myCanvas.mouseWheel(changeCamPosition);
-  myAim = createGraphics(50,50);
-  myAim.image(aim,0,0,50,50);
   */
 }
 
@@ -85,24 +93,39 @@ function draw(){
     background(155,255,255);
     ambientLight(55);
     directionalLight(255, 255, 255, 1, 1, 1);
+      //wooden box
+      texture(cube);
+      push();
+      translate(1000, 500, groundZ + 75 - 100); // -100 = -200/2
+      box(200);
+      pop();
+      //cone
+      texture(grass);
+      push();
+      translate(-1000, -500, groundZ + 75 - 50); // -150 =  - (1000 / 2) 
+      rotateX(3 * PI / 2);
+      cone(200 , 100); // r+h
+      pop();
+      /* 
+      if(camX  inside area and camY inside area change camZ as f(x,y) )
+      */
     showShip();
     showSceneBorders();
+
     /* CAMERA ROTATION ENGINE */
     lookAtX = cos(camAngleZ) * cos(camAngleX);
     lookAtY = cos(camAngleZ) * sin(camAngleX);
     lookAtZ = sin(camAngleZ);
-
-    lookAtX = nolmalization(lookAtX, lookAtY, lookAtZ)[0];
-    lookAtY = nolmalization(lookAtX, lookAtY, lookAtZ)[1];
-    lookAtZ = nolmalization(lookAtX, lookAtY, lookAtZ)[2];
+    //showCursor();
+    lookAtX = normalization(lookAtX, lookAtY, lookAtZ)[0];
+    lookAtY = normalization(lookAtX, lookAtY, lookAtZ)[1];
+    lookAtZ = normalization(lookAtX, lookAtY, lookAtZ)[2];
 
     if(camX == 0 && camY == 0 && camZ == 0){
       camera(camX, camY , camZ, lookAtX , lookAtY , lookAtZ, 0, 0, 1);
     }else{
-
       camera(camX, camY , camZ, camX + lookAtX ,camY + lookAtY , camZ + lookAtZ, camX, camY, 100000);
     }
-    //showCursor();
     time++
     if(jump === true){
       jumpTimer++;
@@ -164,32 +187,24 @@ function mouseMoved(){
       camAngleZ -= sensetivityY;
     }
   }
-
   prevX = mouseX;
   prevY = mouseY;
 }
 
-function  nolmalization(x, y, z){
+function  normalization(x, y, z){
   let len = [];
   len[0] = x / sqrt(x * x +  y * y +  z * z);
   len[1] = y / sqrt(x * x +  y * y +  z * z);
   len[2] = -z / sqrt(x * x +  y * y +  z * z);
   return len;
 }
-/*
-function showCursor(){
-  texture(myAim);
-  push();
-  translate(camX + lookAtX - 20, camY + lookAtY - 20 , camZ + lookAtZ - 20);
-  rotateY(PI / 2);
-  plane(20,20);
-  pop();
-}
-*/
+
+
+
 function showShip(){
   texture(rocket1);
   push();
-    translate(0, 0, groundZ - 200);
+    translate(0, 0, groundZ - 1000);
     push();
       rotateX(PI / 4);
       rotateY(PI / 4);
@@ -259,45 +274,17 @@ function showShip(){
 }
 
 function showSceneBorders(){
-  texture(graphics);
-  //central box
-  graphics.background(255,255,255);
-  box(50);
-  // Top plane
-  graphics.background(0,255,0); // Green
-  push();
-  translate(0, 0, sceneLength / 2);
-  rotateX(0);
-  plane(sceneLength,sceneLength);
-  pop();  
-  // Bottom plane
-  graphics.background(255,255,0); // Yellow
-  push();
-  translate(0, 0, -sceneLength / 2);
-  rotateX(0);
-  plane(sceneLength,sceneLength);
-  pop();
+  texture(arcTexture);
   // Left plane
-  graphics.background(0,0,255); // Blue
   push();
   translate(0, -sceneLength / 2, 0);
   rotateX(PI/2);
-  rotateZ(PI/2);
   rotateX(0);
   plane(sceneLength,sceneLength);
   pop();
-  // Right plane
-  graphics.background(0,0,255); // Blue
-  push();
-  translate(0, sceneLength / 2, 0);
-  rotateX(PI / 2);
-  rotateZ(PI / 2);
-  rotateX(0);
-  plane(sceneLength,sceneLength);
-  pop();
-    
-  // In plane
-  graphics.background(255,0,0); // Red
+
+  texture(stone);
+  // Inside plane
   push();
   translate(-sceneLength / 2, 0, 0);
   rotateY(PI/2);
@@ -305,9 +292,14 @@ function showSceneBorders(){
   rotateX(0);
   plane(sceneLength,sceneLength);
   pop();
-
-  // Out plane
-  graphics.background(255,0,0); // Red
+  // Right plane
+  push();
+  translate(0, sceneLength / 2, 0);
+  rotateX(PI / 2);
+  rotateX(0);
+  plane(sceneLength,sceneLength);
+  pop();
+  // Outside plane
   translate(sceneLength / 2, 0, 0);
   push();
   rotateY(PI/2);
@@ -315,4 +307,17 @@ function showSceneBorders(){
   rotateX(0);
   plane(sceneLength,sceneLength);
   pop();
+  // Bottom plane
+  push();
+  translate(-sceneLength / 2, 0, sceneLength / 2);
+  plane(sceneLength,sceneLength);
+  pop();
+
+  // Top plane
+  texture(cloud);
+  push();
+  translate(-sceneLength / 2, 0, -sceneLength / 2);
+  rotateX(0);
+  plane(sceneLength,sceneLength);
+  pop();  
 }
