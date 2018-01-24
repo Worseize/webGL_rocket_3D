@@ -1,6 +1,6 @@
 class Player{
 
-  constructor(camX, camY, camZ, lookAtX, lookAtY, lookAtZ, upZ){
+  constructor(camX, camY, camZ, lookAtX, lookAtY, lookAtZ, upZ, zVelosity, prevCamX, prevCamY , prevCamZ){
     this.camX = camX;
     this.camY = camY;
     this.camZ = camZ;
@@ -8,6 +8,10 @@ class Player{
     this.lookAtX = lookAtX;
     this.lookAtY = lookAtY;
     this.upZ = upZ;
+    this.zVelosity = zVelosity;
+    this.prevCamX = prevCamX;
+    this.prevCamY = prevCamY;
+    this.prevCamZ = prevCamZ;
   }
 
   show(){
@@ -18,19 +22,80 @@ class Player{
     this.lookAtX = normalization(this.lookAtX, this.lookAtY, this.lookAtZ)[0];
     this.lookAtY = normalization(this.lookAtX, this.lookAtY, this.lookAtZ)[1];
     this.lookAtZ = normalization(this.lookAtX, this.lookAtY, this.lookAtZ)[2];
-    camera(this.camX, this.camY, this.camZ, this.camX + this.lookAtX, this.camY + this.lookAtY, this.camZ + this.lookAtZ,
+    camera(this.camX, this.camY, this.camZ, this.camX + this.lookAtX, this.camY + this.lookAtY, this.camZ - this.lookAtZ,
            this.camX, this.camY, this.upZ);
   }
   jump(){
-    if(jump === true){
+    if(jump){
       jumpTimer++;
-      this.camZ += -playerStartVelosity + gravity * jumpTimer;
-      if(this.camZ > groundZ - camBorder){
-        this.camZ = groundZ - camBorder;
-        jump = false;
-        fall = false;
-        jumpTimer = 1;
+      let i;
+      let flagX; // inside box in X-axis
+      let flagY; // inside box in Y-axis
+
+      if(i != undefined && i < boxArray.length - 1){ // OPTIMIZATION 
+        if(this.camX > boxArray[i].pX - boxArray[i].modelWidth / 2 && this.camX < boxArray[i].px + boxArray[i].modelWidth / 2){
+          flagX = true;
+          if(this.camY > boxArray[i].pY - boxArray[i].modelWidth / 2 && this.camY < boxArray[i].pY + boxArray[i].modelWidth / 2){
+            flagY = true;
+            return;
+          }else{
+            flagX = false;
+            flagY = false;
+          }
+        }else{
+          flagX = false;
+          flagY = false;
+        }
+      }else{
+        for(i = 0; i < boxArray.length; i++){
+          if(this.camX > boxArray[i].pX - boxArray[i].modelWidth / 2 && this.camX < boxArray[i].px + boxArray[i].modelWidth / 2){
+            flagX = true;
+            if(this.camY > boxArray[i].pY - boxArray[i].modelWidth / 2 && this.camY < boxArray[i].pY + boxArray[i].modelWidth / 2){
+              flagY = true;
+              return;
+            }else{
+              flagX = false;
+              flagY = false;
+            }
+          }else{
+            flagX = false;
+            flagY = false;
+          }
+        }
       }
-    }
+
+      if(flagX && flagY){
+        if(this.camZ < boxArray[i].pZ + boxArray[i].modelHeight / 2 && this.camZ + this.zVelosity > boxArray[i].pZ + boxArray[i].modelHeight / 2){
+          currentGround = this.boxArray[i].pZ + boxArray[i].modelHeight / 2;
+          jumpTimer = 0;
+        }else{
+          currentGround = 0;
+        }
+      }
+
+      if(this.camZ < camBorder){ // if player under the ground
+        jumpTimer = 0;
+        this.camZ = camBorder;
+        this.zVelosity = 10;
+        jump = false;
+      }else if(this.camZ + this.zVelosity > currentGround + camBorder && camZ < currentGround + camBorder){ // if player jump on any object
+        jumpTimer = 0;
+        this.camZ = currentGround + camBorder;
+        this.zVelosity = 10;
+        jump = false;
+      }else{
+        this.zVelosity += -gravity * jumpTimer;
+        if(this.zVelosity < -10){ //velosity limitation
+          this.zVelosity = -10;
+        }else if(this.zVelosity > 10){ //velosity limitation
+          this.zVelosity = 10;
+        }
+        this.camZ += this.zVelosity;
+
+      }
+      this.prevCamX = this.camX;
+      this.prevCamY = this.camY;
+      this.prevCamZ = this.camZ;
+    } // if(jump);
   }
 }

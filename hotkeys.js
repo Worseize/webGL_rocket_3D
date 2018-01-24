@@ -1,40 +1,29 @@
 keyPressed  = function(){
-  if(scene == 1){
-    if(keyCode === 65){ //A
-      kk = 65;
-    }
-    if(keyCode === 68){ //D
-      kk = 68;
-    }
-    if(keyCode === 87){ //W
-      kk = 87;
-    }
-    if(keyCode === 83){ //S
-      kk = 83;
-    }
-    if(keyCode === 32){ //SPACE
-      jump = true;
-    }
+  if(keyCode === 65){ //A
+    kk = 65;
+  }
+  if(keyCode === 68){ //D
+    kk = 68;
+  }
+  if(keyCode === 87){ //W
+    kk = 87;
+  }
+  if(keyCode === 83){ //S
+    kk = 83;
+  }
+  if(keyCode === 32){ //SPACE
+    jump = true;
   }
 }
 
-/*
-function mouseClicked(){
-  if(scene == 0){
-    scene = 1;
-  }else{
-    scene = 0;
-  }
-}
-*/
 
 function mouseMoved(){
   //camera rotate LEFT / RIGHT
   if(prevX + sensetivityX > mouseX){
-    camAngleX += sensetivityX;
+    camAngleX -= sensetivityX;
   }
   if(prevX - sensetivityX < mouseX){
-    camAngleX -= sensetivityX;
+    camAngleX += sensetivityX;
   }
 
   //camera rotate UP | DOWN 
@@ -65,40 +54,40 @@ window.onresize = function(){
 }
 function ifKeyIsPressed(){
   if(keyIsPressed){
-    let speedX = camSpeed * player.lookAtX;
-    let speedY = camSpeed * player.lookAtY;
-    let limit = sceneLength / 2 - 150;
+    let speedX = camSpeed * player[0].lookAtX;
+    let speedY = camSpeed * player[0].lookAtY;
+    let limit = sceneLength / 2 - camBorder;
     if(keyCode === 65 || kk === 65){ //A move camera left
-      if(player.camX > limit || player.camY > limit || player.camX < -limit || player.camY < -limit){
-        player.camX = 0;
-        player.camY = 0;
+      if(player[0].camX > limit || player[0].camY > limit || player[0].camX < -limit || player[0].camY < -limit){
+        player[0].camX = 0;
+        player[0].camY = 0;
       }else{
-        player.camX -= speedY;
-        player.camY += speedX;
+        player[0].camX += speedY;
+        player[0].camY -= speedX;
       }
     }else if(keyCode === 68 || kk === 68){ //D move camera right
-      if(player.camX > limit || player.camY > limit || player.camX < -limit || player.camY < -limit){
-        player.camX = 0;
-        player.camY = 0;
+      if(player[0].camX > limit || player[0].camY > limit || player[0].camX < -limit || player[0].camY < -limit){
+        player[0].camX = 0;
+        player[0].camY = 0;
       }else{
-        player.camX += speedY;
-        player.camY -= speedX;
+        player[0].camX -= speedY;
+        player[0].camY += speedX;
       }
     }else if(keyCode === 87 || kk === 87){ //W move camera up
-      if(player.camX > limit || player.camY > limit || player.camX < -limit || player.camY < -limit){
-        player.camX = 0;
-        player.camY = 0;
+      if(player[0].camX > limit || player[0].camY > limit || player[0].camX < -limit || player[0].camY < -limit){
+        player[0].camX = 0;
+        player[0].camY = 0;
       }else{
-        player.camX += speedX;
-        player.camY += speedY;
+        player[0].camX += speedX;
+        player[0].camY += speedY;
       }
     }else if(keyCode === 83 || kk === 83){ //S move camera down
-      if(player.camX < -limit || player.camY < -limit || player.camX > limit || player.camY > limit){
-        player.camX = 0;
-        player.camY = 0;
+      if(player[0].camX < -limit || player[0].camY < -limit || player[0].camX > limit || player[0].camY > limit){
+        player[0].camX = 0;
+        player[0].camY = 0;
       }else{
-        player.camX -= speedX;
-        player.camY -= speedY;
+        player[0].camX -= speedX;
+        player[0].camY -= speedY;
       }
     }
   }else{

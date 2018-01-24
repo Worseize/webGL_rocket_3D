@@ -14,7 +14,7 @@ class createModel{
 	show(){
 		texture(this.modelTexture);
 		push();
-		translate(this.pX, this.pY, groundZ + this.pZ - this.modelHeight / 2 );
+		translate(this.pX, this.pY, this.pZ + this.modelHeight / 2 );
 		if(this.modelIndex === 0 ){ //plane
 			if(this.flat === "left"){
 				rotateX(PI / 2);
@@ -33,7 +33,7 @@ class createModel{
 		}else if(this.modelIndex === 2){ // sphere
 			sphere(this.modelHeight);
 		}else if(this.modelIndex === 3){ //cylinder
-			
+				
 		}else if(this.modelIndex === 4){ //cone
 			rotateX(3 * PI / 2);
 			cone(this.modelWidth , this.modelHeight)

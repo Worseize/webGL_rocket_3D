@@ -5,11 +5,13 @@ function  normalization(x, y, z){
   len[2] = -z / sqrt(x * x +  y * y +  z * z);
   return len;
 }
+
+
 function showShip(){
 	time++;
   texture(rocket1);
   push();
-    translate(0, 0, groundZ - 1000);
+    translate(0, 0, 1000);
     push();
       rotateX(PI / 4);
       rotateY(PI / 4);
