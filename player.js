@@ -60,35 +60,39 @@ class Player{
           }else{
             flagX = false;
             flagY = false;
+            console.log("in0");
           }
         }
       }
 
       if(flagX && flagY){
+        console.log("in1");
         if(this.camZ < boxArray[i].pZ + boxArray[i].modelHeight / 2 && this.camZ + this.zVelosity > boxArray[i].pZ + boxArray[i].modelHeight / 2){
           currentGround = this.boxArray[i].pZ + boxArray[i].modelHeight / 2;
           jumpTimer = 0;
+          console.log("in2");
         }else{
           currentGround = 0;
+          console.log("out");
         }
       }
 
       if(this.camZ < camBorder){ // if player under the ground
         jumpTimer = 0;
         this.camZ = camBorder;
-        this.zVelosity = 10;
+        this.zVelosity = 20;
         jump = false;
       }else if(this.camZ + this.zVelosity > currentGround + camBorder && camZ < currentGround + camBorder){ // if player jump on any object
         jumpTimer = 0;
         this.camZ = currentGround + camBorder;
-        this.zVelosity = 10;
+        this.zVelosity = 20;
         jump = false;
       }else{
         this.zVelosity += -gravity * jumpTimer;
-        if(this.zVelosity < -10){ //velosity limitation
-          this.zVelosity = -10;
-        }else if(this.zVelosity > 10){ //velosity limitation
-          this.zVelosity = 10;
+        if(this.zVelosity < -20){ //velosity limitation
+          this.zVelosity = -20;
+        }else if(this.zVelosity > 20){ //velosity limitation
+          this.zVelosity = 20;
         }
         this.camZ += this.zVelosity;
 

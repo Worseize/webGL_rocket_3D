@@ -57,7 +57,7 @@ function setup(){
   borders[4] = new createModel(0, 0, -sceneLength / 2, sceneLength, sceneLength, stone, 0, "bottom");
   borders[5] = new createModel(0, 0, sceneLength / 2, sceneLength, sceneLength, cloud, 0, "sky");
   //-create Camera
-  player[0] = new Player(camX, camY, camZ, camX + lookAtX, camY + lookAtY, camZ + lookAtZ, -sceneLength * 10, 10 , 0, 0, 0);
+  player[0] = new Player(camX, camY, camZ, camX + lookAtX, camY + lookAtY, camZ + lookAtZ, -sceneLength * 10, 20 , 0, 0, 0);
 }
 
 function draw(){
