@@ -6,4 +6,6 @@
 3. jump --> SPACE
 
 ## Functionality:
-   -gravity for player
+1. gravity for player
+2. player + scene colisions
+3. forces available

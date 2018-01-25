@@ -15,7 +15,7 @@ class createModel{
 		texture(this.modelTexture);
 		push();
 		translate(this.pX, this.pY, this.pZ + this.modelHeight / 2 );
-		if(this.modelIndex === 0 ){ //plane
+		if(this.modelIndex === 0 ){ // plane
 			if(this.flat === "left"){
 				rotateX(PI / 2);
 			}else if(this.flat === "right"){
@@ -28,19 +28,8 @@ class createModel{
  				rotateZ(PI / 2);
 			}
 			plane(this.modelWidth, this.modelHeight);
-		}else if(this.modelIndex === 1){ //box
+		}else if(this.modelIndex === 1){ // box
 	      	box(this.modelHeight);
-		}else if(this.modelIndex === 2){ // sphere
-			sphere(this.modelHeight);
-		}else if(this.modelIndex === 3){ //cylinder
-				
-		}else if(this.modelIndex === 4){ //cone
-			rotateX(3 * PI / 2);
-			cone(this.modelWidth , this.modelHeight)
-		}else if(this.modelIndex === 5){ //ellipsoid
-			
-		}else if(this.modelIndex === 6){ //torus
-			
 		}
 		pop();
 	}
