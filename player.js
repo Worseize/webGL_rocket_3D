@@ -161,6 +161,6 @@ class Player{
     }else if(this.speedZ > speedLimit){
       this.speedX = speedLimit;
     }
-    console.log(flagZ1 + "   " + flagZ2);
+    //console.log(flagZ1 + "   " + flagZ2);
   }
 }

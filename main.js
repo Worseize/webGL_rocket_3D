@@ -17,6 +17,11 @@ function preload(){
   stone = loadImage('img/stone.png');
   bricks = loadImage('img/bricks.png');
   wall = loadImage('img/wall.png');
+  skin = loadImage('img/skin.png');
+  chair = loadModel('models/chair.obj');
+  sitMale = loadModel('models/sitMale.obj');
+  house = loadModel('models/house.obj');
+
 }
 
 function setup(){
@@ -29,6 +34,7 @@ function setup(){
     createUncollidedBoxes();
   }
   //-create walls
+
   borders[0] = new createModel(0, -sceneLength / 2, 0, sceneLength, sceneLength, wall, 0, "left");
   borders[1] = new createModel(-sceneLength / 2, 0, 0, sceneLength, sceneLength, wall, 0, "inside");
   borders[2] = new createModel(0, sceneLength / 2, 0, sceneLength, sceneLength, wall, 0, "right");
@@ -41,7 +47,7 @@ function setup(){
 
 function draw(){
   background(155,255,255);
-  ambientLight(44);
+  ambientLight(55);
   directionalLight(88,88,88,1,1,1);
   for(let i = 0; i < borders.length; i++){
     borders[i].show();
@@ -56,4 +62,22 @@ function draw(){
   player[0].update(); //camera move
   player[0].checkEdges(); // check colisions
   player[0].show(); //camera rotate
+
+  //CHAIR + HUMAN 
+  push();
+  translate(200,200,0); 
+  rotateX(PI/2);
+  ambientMaterial(255,255,0);
+  model(chair);
+  texture(skin);
+  model(sitMale);
+  pop();
+
+  push();
+  translate(200,200,0); 
+  rotateX(PI/2);
+  scale(5);
+  specularMaterial(0,255,255);
+  model(house);
+  pop();
 }
