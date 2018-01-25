@@ -7,7 +7,7 @@
 */
 
 new p5();
-let camBorder = 75, gravity = 0.05, sceneLength = 2000, sensetivity = 0.05 , camAngleX = 0, camAngleZ = 0, boxSize = 100, jump = false, friction = 0.93,
+let camBorder = 75, gravity = 0.05, sceneLength = 2000, sensetivity = 0.08 , camAngleX = 0, camAngleZ = 0, boxSize = 100, jump = false, friction = 0.93,
     borders = [], boxArray = [], boxAmount = 50, player = [], currentGround = camBorder, time = 1, prevX = mouseX, prevY = mouseY, speedLimit = 50;
 
 function preload(){
@@ -17,7 +17,6 @@ function preload(){
   stone = loadImage('img/stone.png');
   bricks = loadImage('img/bricks.png');
   wall = loadImage('img/wall.png');
-  skin = loadImage('img/skin.png');
   chair = loadModel('models/chair.obj');
   sitMale = loadModel('models/sitMale.obj');
   house = loadModel('models/house.obj');
@@ -65,19 +64,21 @@ function draw(){
 
   //CHAIR + HUMAN 
   push();
-  translate(200,200,0); 
+  translate(200,0,0); 
   rotateX(PI/2);
+  rotateY(-PI/2);
   ambientMaterial(255,255,0);
   model(chair);
-  texture(skin);
+  ambientMaterial(231,161,176);
   model(sitMale);
   pop();
 
   push();
-  translate(200,200,0); 
+  translate(-sceneLength / 4, 0,0); 
   rotateX(PI/2);
+  rotateY(PI/2);
   scale(5);
-  specularMaterial(0,255,255);
+  ambientMaterial(0,255,255);
   model(house);
   pop();
 }

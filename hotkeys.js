@@ -31,5 +31,6 @@ function mouseMoved(){
 
 
 window.onresize = function(){
-  myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
+  myCanvas.style("width", innerWidth - 30 + "px");
+  myCanvas.style("height", innerHeight - 30 + "px");
 }
