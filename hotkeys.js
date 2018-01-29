@@ -3,7 +3,9 @@ function keyPressed(){
     jump = true;
   }
 }
-
+function mouseReleased(){
+  fire = true;
+}
 
 function mouseMoved(){
   //camera rotate LEFT / RIGHT
@@ -16,12 +18,12 @@ function mouseMoved(){
 
   //camera rotate UP | DOWN 
   if(prevY > mouseY){
-    if(camAngleZ < PI / 2 - sensetivity){
+    if(camAngleZ < PI / 2 - sensetivity * 5){
       camAngleZ += sensetivity;
     }
   }
   if(prevY < mouseY ){
-    if(camAngleZ > -PI / 2   + sensetivity){
+    if(camAngleZ > -PI / 2   + sensetivity * 5){
       camAngleZ -= sensetivity;
     }
   }
@@ -31,6 +33,5 @@ function mouseMoved(){
 
 
 window.onresize = function(){
-  myCanvas.style("width", innerWidth - 30 + "px");
-  myCanvas.style("height", innerHeight - 30 + "px");
+  myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
 }

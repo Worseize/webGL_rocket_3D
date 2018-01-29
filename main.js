@@ -7,25 +7,22 @@
 */
 
 new p5();
-let camBorder = 75, gravity = 0.05, sceneLength = 2000, sensetivity = 0.08 , camAngleX = 0, camAngleZ = 0, boxSize = 100, jump = false, friction = 0.93,
-    borders = [], boxArray = [], boxAmount = 50, player = [], currentGround = camBorder, time = 1, prevX = mouseX, prevY = mouseY, speedLimit = 50;
+let camBorder = 75, gravity = 1, sceneLength = 2000, sensetivity = 0.08 , camAngleX = 0, camAngleZ = 0, boxSize = 100, fire = false, jump = false,
+    borders = [], boxArray = [], boxAmount = 1, playerArray = [], friction = 0.95, bulletArray = [], bulletMaxId = 0, currentGround = 0, time = 1, prevX = mouseX,
+    prevY = mouseY, speedLimit = boxSize / 2 - 1, aimArray = [], scaler = 1;
 
 function preload(){
-  rocket1 = loadImage('img/rocket1.png');
-  aim = loadImage('img/aim.png');
   cloud = loadImage('img/cloud.png');
+  aim = loadImage('img/aim.png');
   stone = loadImage('img/stone.png');
-  bricks = loadImage('img/bricks.png');
   wall = loadImage('img/wall.png');
-  chair = loadModel('models/chair.obj');
-  sitMale = loadModel('models/sitMale.obj');
-  house = loadModel('models/house.obj');
-
+  bulletImg = loadImage('img/bullet.jpg');
 }
 
 function setup(){
   myCanvas = createCanvas(innerWidth - 30, innerHeight - 30, WEBGL);
   myCanvas.style("cursor", "none");
+  myCanvas.mouseWheel(changeScaler);
   prevX = mouseX;
   prevY = mouseY;
   //CREATE OBJECTS ON SCENE
@@ -34,51 +31,46 @@ function setup(){
   }
   //-create walls
 
-  borders[0] = new createModel(0, -sceneLength / 2, 0, sceneLength, sceneLength, wall, 0, "left");
-  borders[1] = new createModel(-sceneLength / 2, 0, 0, sceneLength, sceneLength, wall, 0, "inside");
-  borders[2] = new createModel(0, sceneLength / 2, 0, sceneLength, sceneLength, wall, 0, "right");
-  borders[3] = new createModel(sceneLength / 2, 0, 0, sceneLength, sceneLength, wall, 0, "outside");
-  borders[4] = new createModel(0, 0, -sceneLength / 2, sceneLength, sceneLength, stone, 0, "bottom");
-  borders[5] = new createModel(0, 0, sceneLength / 2, sceneLength, sceneLength, cloud, 0, "sky");
+  borders[0] = new createSceneBorders(sceneLength / 2, 0, 0, sceneLength, sceneLength, wall, "left");
+  borders[1] = new createSceneBorders(0, sceneLength / 2, 0, sceneLength, sceneLength, wall, "inside");
+  borders[2] = new createSceneBorders(sceneLength / 2, sceneLength, 0, sceneLength, sceneLength, wall, "right");
+  borders[3] = new createSceneBorders(sceneLength, sceneLength / 2, 0, sceneLength, sceneLength, wall, "outside");
+  borders[4] = new createSceneBorders(sceneLength / 2, sceneLength / 2, -sceneLength / 2, sceneLength, sceneLength, stone, "bottom");
+  borders[5] = new createSceneBorders(sceneLength / 2, sceneLength / 2, sceneLength / 2, sceneLength, sceneLength, cloud, "sky");
   //-create Camera
-  player[0] = new Player(0, 0, 75, 1, 0, 75, 0 , 0 , 0 , 0 , 0, 0);
+  playerArray[0] = new Player(sceneLength / 2, sceneLength / 2, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0, 0);
+  aimArray[0] = new createAim(playerArray[0].camX, playerArray[0].camY, playerArray[0].camZ, 15, 15);
 }
 
 function draw(){
-  background(155,255,255);
-  ambientLight(55);
-  directionalLight(88,88,88,1,1,1);
+  background(155, 255, 255);
+  ambientLight(155);
+  //Scene borders methods
   for(let i = 0; i < borders.length; i++){
     borders[i].show();
     if(i == 5){
       borders[i].move(); //sky
     }
   }
+  //Boxes methods
   for(let i = 0; i < boxArray.length; i++){
     boxArray[i].show();
   }
-  
-  player[0].update(); //camera move
-  player[0].checkEdges(); // check colisions
-  player[0].show(); //camera rotate
-
-  //CHAIR + HUMAN 
-  push();
-  translate(200,0,0); 
-  rotateX(PI/2);
-  rotateY(-PI/2);
-  ambientMaterial(255,255,0);
-  model(chair);
-  ambientMaterial(231,161,176);
-  model(sitMale);
-  pop();
-
-  push();
-  translate(-sceneLength / 4, 0,0); 
-  rotateX(PI/2);
-  rotateY(PI/2);
-  scale(5);
-  ambientMaterial(0,255,255);
-  model(house);
-  pop();
+  // Player methods 
+  playerArray[0].shoot();
+  playerArray[0].update(); //camera move
+  playerArray[0].checkEdges(); // check colisions
+  playerArray[0].display(); //camera rotate
+  //Bullet methods
+  if(bulletArray.length > 0){
+    for(let i = 0; i < bulletArray.length; i++){
+      bulletArray[i].display();
+      bulletArray[i].update();
+      bulletArray[i].checkEdges();
+    }
+  }
+  //Aim methods
+  texture(aim);
+  aimArray[0].show();
+  aimArray[0].update();
 }
