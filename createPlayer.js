@@ -35,16 +35,16 @@ class Player{
     this.camZ -= camBorder;
   }
   shoot(){
-    if(fire == true){
+    if(fire == true && reloadReady){
       bulletArray.push(
         new Bullet(
           this.camX + camBorder * this.lookAtX,
           this.camY + camBorder * this.lookAtY,
           this.camZ + camBorder * this.lookAtZ + camBorder,
-          10,
-          this.lookAtX,
-          this.lookAtY,
-          this.lookAtZ,
+          3,
+          this.lookAtX * 20,
+          this.lookAtY * 20,
+          this.lookAtZ * 20,
           bulletMaxId
         )
       );

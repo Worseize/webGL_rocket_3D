@@ -36,16 +36,25 @@ Object.prototype.removeItem = function(key, value){
       }
     }
 };
-
-//Debug part
-function changeScaler(event){
-  if(event.deltaY > 5){
-    if(scaler > 0.1){
-      scaler -= 0.1;
-    }
-  }else if(event.deltaY < 5){
-    if(scaler < 3){
-      scaler += 0.1;
-    }
-  }
+//RELOAD GUN
+let showStaticGun;
+function delayCreate() {
+  showStaticGun = window.setTimeout(createStaticMyGun, 3000);
+}
+function createStaticMyGun() {
+  //remove gif
+  document.body.removeChild(document.getElementById('myGun'));
+  //show png
+  myGun = createImg("img/akInHands.png");
+  let partX = 2;
+  let partY = 4;
+  myGun.style("position","absolute");
+  myGun.style("left", (partX - 1) / partX * absoluteW  + "px");
+  myGun.style("top", (partY - 1) / partY * absoluteH  + "px");
+  myGun.style("width", absoluteW / partX  + "px");
+  myGun.style("height", absoluteH / partY + "px");
+  myGun.style("pointer-events","none");
+  myGun.style("user-select","none");
+  myGun.id("myGun");
+  reloadReady = true;
 }

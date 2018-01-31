@@ -1,9 +1,10 @@
 # OPEN GL => WEB GL => p5.js library => myScetch
 
 ## Options:
-1. rotate camera(player) by mouse
-2. move camera(player) W | S || A | D
+1. rotate camera(player) --> mouseMove
+2. move camera(player) --> W | S | A | D
 3. jump --> SPACE
+4. reload --> R
 
 ## Functionality:
 1. gravity for player
@@ -11,10 +12,9 @@
 3. forces available (friction)
 
 ### Last update:
-1. [OPTIONS] strike / shoot --> mouseClick 
-2. [Functionality] aim
-3. [Functionality] bullets (auto delete after reach scene borders)
-4. [Deletion] all models and their textures (to heavy)
+1. [Functionality] aim remaked with [DOM image] now vs [graphics] in past
+2. [Functionality] ak-47 + arm
+3. [Options] reloading added (cant shoot while reload)
 
 ## Future plans:
 1. Full screen (mouse out of canvas biggest problem)
