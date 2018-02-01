@@ -9,11 +9,18 @@
 // document.body.getElementsByTagName('*') - SHOWS ALL DOM NODES IN CONSOLE
 
 new p5();
-let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.05 , camAngleX = 0, camAngleZ = 0, fire = false, jump = false,
-    borders = [], boxArray = [], horizont = [], boxAmount = 50, playerArray = [], friction = 0.95, bulletArray = [], bulletMaxId = 0, 
-    currentGround = 0, time = 1, prevX = mouseX, prevY = mouseY, speedLimit = 50, boxSize = speedLimit * 2 + 100, scaler = 1 , absoluteW, absoluteH,
-    reloadReady = true, start = false, firstSceneTimer = 0;
 
+//DEFINE
+let absoluteW, absoluteH, delayRemoveReloadAnimation;
+//VARIABLES
+let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.05 , camAngleX = 0, camAngleZ = 0, boxAmount = 50, friction = 0.95,
+    bulletMaxId = 0, currentGround = 0, time = 1, speedLimit = 50, scaler = 1 , aimSize = 100, scene = 0, firstSceneTimer = 0;
+//ARRAYS
+let borders = [], boxArray = [], horizont = [], playerArray = [], bulletArray = [];
+//BOOLEAN
+let fire = false, jump = false, reloadReady = true, pointerLock = false;
+//SENSORS || DEPENDENT VARIABLES
+let prevX = mouseX, prevY = mouseY, boxSize = speedLimit * 2 + 100;
 
 function preload(){
   cloud = loadImage('img/cloud.png');
@@ -23,44 +30,53 @@ function preload(){
   bulletImg = loadImage('img/bullet.jpg');
   akInHands = loadImage('img/akInHands.png');
   akReload = loadImage('img/akReload.gif');
-
+  aim = loadImage('img/aim.png');
 }
 
 function setup(){
+  //CREATE CANVAS
   absoluteW = innerWidth - 5;
   absoluteH = innerHeight - 5;
   myCanvas = createCanvas(absoluteW, absoluteH, WEBGL);
-  myCanvas.style("cursor", "none");
-  createMenu();
-  //POINTER LOCK SETUP START AFTER DEFINE CANVAS (myCanvas = createCAnvas...)
-  var canvas = document.querySelector('canvas');
-  canvas.onclick = function(){
-    if(!start){
-      start = true;
-      staticImagesInDomCreate(); // create static dom elements
-      canvas.requestPointerLock();
-    }
-  };
-  canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
-  //END
+  //SCENE 0
+  createMenu("Click to start");
 
-  //create primitives
+  //POINTER LOCK SETUP START AFTER DEFINE CANVAS (myCanvas = createCAnvas...)
+  pointerLockSetup();
+
+  //CREATE PRIMITIVES
   for(let i = 0; i < boxAmount - 1; i++){
-    createUncollidedBoxes();
+    pushBoxesToInstance();
   }
-  //create walls
-  borders[0] = new createSceneBorders(sceneLength / 2, 0, 0, sceneLength, sceneLength, wall, "left");
-  borders[1] = new createSceneBorders(0, sceneLength / 2, 0, sceneLength, sceneLength, wall, "inside");
-  borders[2] = new createSceneBorders(sceneLength / 2, sceneLength, 0, sceneLength, sceneLength, wall, "right");
-  borders[3] = new createSceneBorders(sceneLength, sceneLength / 2, 0, sceneLength, sceneLength, wall, "outside");
-  borders[4] = new createSceneBorders(sceneLength / 2, sceneLength / 2, -sceneLength / 2, sceneLength, sceneLength, stone, "bottom");
-  borders[5] = new createSceneBorders(sceneLength / 2, sceneLength / 2, sceneLength / 2, sceneLength, sceneLength, cloud, "sky");
-  //create camera
+  //CREATE SCENE BORDERS
+  pushSceneBordersToInstance();
+  //CREATE MYSELF VIEW (CAMERA)
   playerArray[0] = new Player(sceneLength / 2, sceneLength / 2, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0, 0);
 }
 
 function draw(){
-  if(start){
+  if(scene === 0){
+    background(55);
+    if(firstSceneTimer < 2 * PI){
+      rotateX(firstSceneTimer);
+    }else if(firstSceneTimer < 4 * PI){
+    //pause
+    }else if(firstSceneTimer < 6 * PI){
+      rotateY(firstSceneTimer);
+    }else if(firstSceneTimer < 8 * PI){
+    //pause
+    }else if(firstSceneTimer < 10 * PI){
+      rotateZ(firstSceneTimer);
+    }else if(firstSceneTimer < 12 * PI){
+    //pause
+    }else {
+      firstSceneTimer = 0;
+    }
+    texture(firstScene);
+    plane(300, 300);
+    firstSceneTimer += PI * 3 / 180; // 3 degree per frame
+
+  }else if(scene === 1){
     background(155, 255, 255);
     ambientLight(155);
     //Scene borders methods
@@ -87,8 +103,5 @@ function draw(){
         bulletArray[i].checkEdges();
       }
     }
-  }else{
-    showMenu();
   }
 }
-

@@ -5,6 +5,7 @@
 2. move camera(player) --> W | S | A | D
 3. jump --> SPACE
 4. reload --> R
+5. pause --> ESC + mouseMove 
 
 ## Functionality:
 1. gravity for player
@@ -13,11 +14,13 @@
 4. Pointer Lock --> mouse will never move out of the canvas (only ESC helps)
 
 ### Last update:
-1. [Functionality] Pointer Lock ---> solved biggest problem 
-2. [Functionality] Bullets <--> Boxes collisions  ===> Bullets will disappear
+1. [Code Structure] --> better to read
+2. bug with pointer unlock fixed
+3. 2 scenes [(MENU || PAUSE) && GamePlay]
+4. [OPTIONS] pause --> ESC + mouseMove 
 
 ### Known Bugs:
-1. After pointer unlock --> cant play 
+1. before reload ends , pause will crash pointer lock.
 
 ## Future plans:
 1. ~~Pointer Lock (mouse out of canvas biggest problem)~~ ---> Solved 
