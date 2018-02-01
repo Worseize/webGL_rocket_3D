@@ -32,12 +32,12 @@ function pushBoxesToInstance(){
 function createGun(pathToGun){
   myGun = createImg(pathToGun);
   let partX = 2;
-  let partY = 4;
+  let partY = 6;
   myGun.style("position","absolute");
-  myGun.style("left", (partX - 1) / partX * absoluteW  + "px");
-  myGun.style("top", (partY - 1) / partY * absoluteH  + "px");
-  myGun.style("width", absoluteW / partX  + "px");
-  myGun.style("height", absoluteH / partY + "px");
+  myGun.style("right", 0 + "px");
+  myGun.style("bottom", 0  + "px");
+  myGun.style("width", absoluteW  + "px");
+  myGun.style("height", 250 + "px");
   myGun.style("pointer-events","none");
   myGun.style("user-select","none");
   myGun.id("myGun");

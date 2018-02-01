@@ -13,14 +13,16 @@ new p5();
 //DEFINE
 let absoluteW, absoluteH, delayRemoveReloadAnimation;
 //VARIABLES
-let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.05 , camAngleX = 0, camAngleZ = 0, boxAmount = 50, friction = 0.95,
+let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.04 , camAngleX = 0, camAngleZ = 0, boxAmount = 50, friction = 0.95,
     bulletMaxId = 0, currentGround = 0, time = 1, speedLimit = 50, scaler = 1 , aimSize = 100, scene = 0, firstSceneTimer = 0;
 //ARRAYS
-let borders = [], boxArray = [], horizont = [], playerArray = [], bulletArray = [];
+let borders = [], boxArray = [], horizont = [], playerArray = [], bulletArray = [], gunArray = [];
 //BOOLEAN
 let fire = false, jump = false, reloadReady = true, pointerLock = false;
 //SENSORS || DEPENDENT VARIABLES
 let prevX = mouseX, prevY = mouseY, boxSize = speedLimit * 2 + 100;
+//SERVER VARIABLES
+playerID = 0;
 
 function preload(){
   cloud = loadImage('img/cloud.png');
@@ -31,9 +33,11 @@ function preload(){
   akInHands = loadImage('img/akInHands.png');
   akReload = loadImage('img/akReload.gif');
   aim = loadImage('img/aim.png');
+  knife = loadImage('img/knife.png');
 }
 
 function setup(){
+
   //CREATE CANVAS
   absoluteW = innerWidth - 5;
   absoluteH = innerHeight - 5;
@@ -51,7 +55,7 @@ function setup(){
   //CREATE SCENE BORDERS
   pushSceneBordersToInstance();
   //CREATE MYSELF VIEW (CAMERA)
-  playerArray[0] = new Player(sceneLength / 2, sceneLength / 2, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0, 0);
+  playerArray[playerID] = new Player(sceneLength / 2, sceneLength / 2, 0, 1, 0, 0, 0 , 0 , 0 , 0 , 0, 0, [1, 1, 1, 1, 0], 0, playerID);
 }
 
 function draw(){
@@ -91,10 +95,10 @@ function draw(){
       boxArray[i].show();
     }
     // Player methods 
-    playerArray[0].shoot();
-    playerArray[0].update(); //camera move
-    playerArray[0].checkEdges(); // check colisions
-    playerArray[0].display(); //camera rotate
+    playerArray[playerID].shoot();
+    playerArray[playerID].update(); //camera move
+    playerArray[playerID].checkEdges(); // check colisions
+    playerArray[playerID].display(); //camera rotate
     //Bullet methods
     if(bulletArray.length > 0){
       for(let i = 0; i < bulletArray.length; i++){

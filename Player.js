@@ -1,6 +1,6 @@
 class Player{
 
-  constructor(camX, camY, camZ, lookAtX, lookAtY, lookAtZ, speedX, speedY, speedZ, accX, accY, accZ){
+  constructor(camX, camY, camZ, lookAtX, lookAtY, lookAtZ, speedX, speedY, speedZ, accX, accY, accZ, gunArray, action, playerId){
     this.camX = camX;
     this.camY = camY;
     this.camZ = camZ;
@@ -13,6 +13,9 @@ class Player{
     this.accX = accX;
     this.accY = accY;
     this.accZ = accZ;
+    this.gunArray = gunArray; // 0 - pistol ID , 1 - automatic ID , 2 - knife , 3 - grenade ID, 4 - current Gun.
+    this.action = action; // if made some action then can`t maake others for some pereod
+    this.playerId = playerId;
   }
 
   display(){
@@ -29,22 +32,22 @@ class Player{
     this.lookAtY = scaler * normalization(this.lookAtX, this.lookAtY, this.lookAtZ)[1];
     this.lookAtZ = scaler * normalization(this.lookAtX, this.lookAtY, this.lookAtZ)[2];
     this.lookAtZ *= -1; // (making Z - axis positive ) see --> img/view.gif
-    camera(this.camX, this.camY, this.camZ, this.camX + this.lookAtX , this.camY + this.lookAtY, this.camZ + this.lookAtZ,
-           this.camX, this.camY, -sceneLength * 10); //create camera
     //fix  texture entanglement (move camera back after calculations Z-axis)
+    camera(this.camX, this.camY, this.camZ, this.camX + this.lookAtX , this.camY + this.lookAtY, this.camZ + this.lookAtZ,
+             this.camX, this.camY, -sceneLength * 10); //create camera
     this.camZ -= camBorder;
   }
   shoot(){
-    if(fire == true && reloadReady){
+    if(fire == true && reloadReady && this.gunArray[4] === 0 && this.gunArray[0] === 1){ // if gun is automatics and automatics is ak-47
       bulletArray.push(
         new Bullet(
           this.camX + camBorder * this.lookAtX,
           this.camY + camBorder * this.lookAtY,
           this.camZ + camBorder * this.lookAtZ + camBorder,
           3,
-          this.lookAtX * 1,
-          this.lookAtY * 1,
-          this.lookAtZ * 1,
+          this.lookAtX * 30,
+          this.lookAtY * 30,
+          this.lookAtZ * 30,
           bulletMaxId
         )
       );
