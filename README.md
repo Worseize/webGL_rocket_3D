@@ -10,14 +10,17 @@
 1. gravity for player
 2. player + scene colisions
 3. forces available (friction)
+4. Pointer Lock --> mouse will never move out of the canvas (only ESC helps)
 
 ### Last update:
-1. [Functionality] aim remaked with [DOM image] now vs [graphics] in past
-2. [Functionality] ak-47 + arm
-3. [Options] reloading added (cant shoot while reload)
+1. [Functionality] Pointer Lock ---> solved biggest problem 
+2. [Functionality] Bullets <--> Boxes collisions  ===> Bullets will disappear
+
+### Known Bugs:
+1. After pointer unlock --> cant play 
 
 ## Future plans:
-1. Full screen (mouse out of canvas biggest problem)
+1. ~~Pointer Lock (mouse out of canvas biggest problem)~~ ---> Solved 
 2. AI players
 3. Player <---> primitives collision
 4. Health

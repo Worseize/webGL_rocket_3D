@@ -42,9 +42,9 @@ class Player{
           this.camY + camBorder * this.lookAtY,
           this.camZ + camBorder * this.lookAtZ + camBorder,
           3,
-          this.lookAtX * 20,
-          this.lookAtY * 20,
-          this.lookAtZ * 20,
+          this.lookAtX * 1,
+          this.lookAtY * 1,
+          this.lookAtZ * 1,
           bulletMaxId
         )
       );
@@ -54,7 +54,7 @@ class Player{
   }
   update(){
     //APPLY FORCES
-    if(this.camZ > currentGround){
+    if(this.camZ > currentGround ){
       this.speedZ -= gravity;
     }
     
@@ -91,13 +91,7 @@ class Player{
     this.speedZ *= friction;
   }
   checkEdges(){
-    // Player && boxes collision detection
-    for(let i = 0 ; i < boxArray.length; i++){
-      if(this.camZ > boxArray[i].pZ - boxArray[i].modelHeight / 2 && this.camZ < boxArray[i].pZ + boxArray[i].modelHeight / 2){ //Inside Z-axis
-
-      }
-    }
-
+    // if camX out of scene
     if(this.camX > sceneLength - camBorder){
       this.camX = sceneLength - camBorder;
       this.speedX = 0;
@@ -106,8 +100,8 @@ class Player{
       this.camX = camBorder;
       this.speedX = 0;
       this.accX = 0;
-    } // if camX out of scene
-
+    } 
+    // if camY out of scene
     if(this.camY > sceneLength - camBorder){
       this.camY = sceneLength  - camBorder;
       this.speedY = 0;
@@ -116,8 +110,8 @@ class Player{
       this.camY = camBorder;
       this.speedY = 0;
       this.accY = 0;
-    } // if camY out of scene
-
+    }
+    // if camZ out of scene
     if(this.camZ < 0){
         this.camZ = 0;
         this.speedZ = 0;
@@ -126,7 +120,7 @@ class Player{
         this.camZ = sceneLength;
         this.speedZ = 0;
         this.accZ;
-    } // if camZ out of scene
+    }
 
     // VELOSITY LIMIT 
     if(this.speedZ < -speedLimit){

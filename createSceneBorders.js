@@ -4,8 +4,8 @@ class createSceneBorders{
 		this.pX = positionX;
 		this.pY = positionY;
 		this.pZ = positionZ;
-		this.modelWidth = modelWidth;
-		this.modelHeight = modelHeight;
+		this.w = modelWidth;
+		this.h = modelHeight;
 		this.modelTexture = modelTexture;
 		this.orientation = orientation; // left , right , top , buttom , inside, outside
 	}
@@ -13,7 +13,7 @@ class createSceneBorders{
 	show(){
 		texture(this.modelTexture);
 		push();
-			translate(this.pX, this.pY, this.pZ + this.modelHeight / 2 );
+			translate(this.pX, this.pY, this.pZ + this.h / 2 );
 			if(this.orientation === "left"){
 				rotateX(PI / 2);
 			}else if(this.orientation === "right"){
@@ -25,7 +25,7 @@ class createSceneBorders{
 				rotateY(PI / 2);
 					rotateZ(PI / 2);
 			}
-			plane(this.modelWidth, this.modelHeight);
+			plane(this.w, this.h);
 		pop();
 	}
 
@@ -33,15 +33,15 @@ class createSceneBorders{
 		if(this.orientation === "sky"){
 			this.pX+= 5;
 			this.pY+= 5;
-			if(this.pX > sceneLength + this.modelWidth / 2){
-				this.pX = - this.modelWidth / 2;
-			}else if(this.pX < -this.modelWidth / 2){
-				this.pX = sceneLength + this.modelWidth / 2;
+			if(this.pX > sceneLength + this.w / 2){
+				this.pX = - this.w / 2;
+			}else if(this.pX < -this.w / 2){
+				this.pX = sceneLength + this.w / 2;
 			}
-			if(this.pY > sceneLength + this.modelHeight / 2){
-				this.pY = - this.modelHeight / 2; 
-			}else if(this.pY < -this.modelHeight / 2){
-				this.pY = sceneLength  + this.modelHeight / 2;
+			if(this.pY > sceneLength + this.h / 2){
+				this.pY = - this.h / 2; 
+			}else if(this.pY < -this.h / 2){
+				this.pY = sceneLength  + this.h / 2;
 			}
 		}
 	}

@@ -9,10 +9,11 @@
 // document.body.getElementsByTagName('*') - SHOWS ALL DOM NODES IN CONSOLE
 
 new p5();
-let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.03 , camAngleX = 0, camAngleZ = 0, boxSize = 100, fire = false,
-    jump = false, borders = [], boxArray = [], horizont = [], boxAmount = 50, playerArray = [], friction = 0.95, bulletArray = [],
-    bulletMaxId = 0, currentGround = 0, time = 1, prevX = mouseX, prevY = mouseY, speedLimit = boxSize / 2 - 1, scaler = 1 ,
-    absoluteW, absoluteH, reloadReady = true;
+let camBorder = 100, gravity = 1, sceneLength = 3000, sensetivity = 0.05 , camAngleX = 0, camAngleZ = 0, fire = false, jump = false,
+    borders = [], boxArray = [], horizont = [], boxAmount = 50, playerArray = [], friction = 0.95, bulletArray = [], bulletMaxId = 0, 
+    currentGround = 0, time = 1, prevX = mouseX, prevY = mouseY, speedLimit = 50, boxSize = speedLimit * 2 + 100, scaler = 1 , absoluteW, absoluteH,
+    reloadReady = true, start = false, firstSceneTimer = 0;
+
 
 function preload(){
   cloud = loadImage('img/cloud.png');
@@ -30,33 +31,19 @@ function setup(){
   absoluteH = innerHeight - 5;
   myCanvas = createCanvas(absoluteW, absoluteH, WEBGL);
   myCanvas.style("cursor", "none");
-  //AIM
-  myAim = createImg("img/aim.png");
-  myAim.style("position","absolute");
-  myAim.style("left",(absoluteW - 100) / 2 + "px"); // 100 = element Width
-  myAim.style("top",(absoluteH - 100) / 2 + "px"); // 100 = element height
-  myAim.style("width","100px");
-  myAim.style("height","100px");
-  myAim.style("pointer-events","none");
-  myAim.style("user-select","none");
-  myAim.style("user-drag","none");
-  myAim.id("myAim");
-  //GUN
-  myGun = createImg("img/akInHands.png");
-  let partX = 2;
-  let partY = 4;
-  myGun.style("position","absolute");
-  myGun.style("left", (partX - 1) / partX * absoluteW  + "px");
-  myGun.style("top", (partY - 1) / partY * absoluteH  + "px");
-  myGun.style("width", absoluteW / partX  + "px");
-  myGun.style("height", absoluteH / partY + "px");
-  myGun.style("pointer-events","none");
-  myGun.style("user-select","none");
-  myGun.style("user-drag","none");
-  myGun.id("myGun");
+  createMenu();
+  //POINTER LOCK SETUP START AFTER DEFINE CANVAS (myCanvas = createCAnvas...)
+  var canvas = document.querySelector('canvas');
+  canvas.onclick = function(){
+    if(!start){
+      start = true;
+      staticImagesInDomCreate(); // create static dom elements
+      canvas.requestPointerLock();
+    }
+  };
+  canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock;
+  //END
 
-  prevX = mouseX;
-  prevY = mouseY;
   //create primitives
   for(let i = 0; i < boxAmount - 1; i++){
     createUncollidedBoxes();
@@ -73,30 +60,35 @@ function setup(){
 }
 
 function draw(){
-  background(155, 255, 255);
-  ambientLight(155);
-  //Scene borders methods
-  for(let i = 0; i < borders.length; i++){
-    borders[i].show();
-    if(i == 5){
-      borders[i].move(); //sky
+  if(start){
+    background(155, 255, 255);
+    ambientLight(155);
+    //Scene borders methods
+    for(let i = 0; i < borders.length; i++){
+      borders[i].show();
+      if(i == 5){
+        borders[i].move(); //sky
+      }
     }
-  }
-  //Boxes methods
-  for(let i = 0; i < boxArray.length; i++){
-    boxArray[i].show();
-  }
-  // Player methods 
-  playerArray[0].shoot();
-  playerArray[0].update(); //camera move
-  playerArray[0].checkEdges(); // check colisions
-  playerArray[0].display(); //camera rotate
-  //Bullet methods
-  if(bulletArray.length > 0){
-    for(let i = 0; i < bulletArray.length; i++){
-      bulletArray[i].display();
-      bulletArray[i].update();
-      bulletArray[i].checkEdges();
+    //Boxes methods
+    for(let i = 0; i < boxArray.length; i++){
+      boxArray[i].show();
     }
+    // Player methods 
+    playerArray[0].shoot();
+    playerArray[0].update(); //camera move
+    playerArray[0].checkEdges(); // check colisions
+    playerArray[0].display(); //camera rotate
+    //Bullet methods
+    if(bulletArray.length > 0){
+      for(let i = 0; i < bulletArray.length; i++){
+        bulletArray[i].display();
+        bulletArray[i].update();
+        bulletArray[i].checkEdges();
+      }
+    }
+  }else{
+    showMenu();
   }
 }
+

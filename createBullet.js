@@ -19,9 +19,19 @@ class Bullet{
 
     if(this.pZ > sceneLength || this.pZ < 0 || this.pX < 0 || this.pX > sceneLength || this.pY < 0 || this.pY > sceneLength){
       bulletArray.removeItem('id', this.id);
-      console.log("bullets in scene = " + bulletArray.length);
     }
-
+    //(Bullet && Box) collision
+    //Bottom + Top
+    for(let i = 0 ; i < boxArray.length; i++){
+      if(this.pX > boxArray[i].pX - boxArray[i].h / 2 && this.pX < boxArray[i].pX + boxArray[i].h / 2){
+        if(this.pY > boxArray[i].pY - boxArray[i].h / 2 && this.pY < boxArray[i].pY + boxArray[i].h / 2){
+          if(this.pZ > boxArray[i].pZ - boxArray[i].h / 2 && this.pZ < boxArray[i].pZ + boxArray[i].h / 2){
+            bulletArray.removeItem('id', this.id);
+            break;
+          }
+        }
+      }
+    }
     // VELOSITY LIMIT 
     if(this.speedZ < -speedLimit){
       this.speedZ = -speedLimit;
@@ -38,19 +48,7 @@ class Bullet{
     }else if(this.speedZ > speedLimit){
       this.speedX = speedLimit;
     }
-    /*
-    //Boxes - colisions
-    for(let i = 0 ; i < boxArray; i++){
-      if(this.pX > boxArray[i].pX - boxArray[i].modelHeight && this.pX < boxArray[i].pX + boxArray[i].modelHeight){
-        if(this.pY > boxArray[i].pY - boxArray[i].modelHeight && this.pY < boxArray[i].pY + boxArray[i].modelHeight){
-          if(this.pZ > boxArray[i].pZ - boxArray[i].modelHeight && this.pZ > boxArray[i].pZ || 
-             this.pZ < boxArray[i].pZ + boxArray[i].modelHeight && this.pZ > boxArray[i].pZ){
-            this.speedZ *= -1;
-          }
-        }
-      }
-    }
-    */
+
   }
   display(){
   	texture(bulletImg);
