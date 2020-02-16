@@ -40,5 +40,4 @@ function lockChangeAlert() {
 function updatePosition(e){
   prevX = -e.movementX + mouseX;
   prevY = -e.movementY + mouseY;
-
 }
